@@ -1,0 +1,232 @@
+@font-face {
+	font-family: "EXO-2";
+	src: url("../css/fonts/Exo2-Black.ttf") format("truetype");
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "EXO-2-light";
+	src: url("../css/fonts/Exo2-Light.ttf") format("truetype");
+	font-weight: normal;
+	font-style: normal;
+}
+.main-body {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: #f0f2f7;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	font-family: EXO-2-light;
+	font-size: 1em;
+	color: #445397;
+
+	.titlebar {
+		position: relative;
+		width: 100%;
+		height: 30px;
+		padding-left: 20px;
+		margin-top: 20px;
+		align-items: center;
+		font-weight: 700;
+		font-size: 2em;
+		color: #445397;
+		font-family: EXO-2;
+		box-sizing: border-box;
+	}
+
+	.window-button {
+		flex: 1;
+		width: 30px;
+		height: 30px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		cursor: default;
+	}
+
+	.window-handle {
+		flex: 8;
+		height: 30px;
+		width: 100%;
+		user-select: none;
+		-webkit-app-region: drag;
+		cursor: move;
+	}
+
+	.window-buttons-wrapper {
+		position: relative;
+		width: 100%;
+		height: 30px;
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+		background-image: linear-gradient(
+			to bottom,
+			#e3e3e3,
+			#e7e7e8,
+			#eaeaed,
+			#edeef2,
+			#f0f2f7
+		);
+	}
+
+	.content {
+		padding: 20px;
+		display: flex;
+		flex-direction: column;
+		position: relative;
+		width: 100%;
+		height: 100%;
+		box-sizing: border-box;
+	}
+
+	.files-list-wrapper {
+		width: 100%;
+		padding: 20px;
+		box-sizing: border-box;
+		border-radius: 20px;
+		background-color: #ffffff;
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+		height: 500px;
+		.file-list-title-wrapper {
+			flex: 1;
+			font-family: EXO-2;
+			display: flex;
+			align-items: center;
+			.current-dir {
+				margin-left: 6px;
+				font-size: 0.7em;
+			}
+		}
+		.files-list {
+			flex: 9;
+			overflow-x: hidden;
+			overflow-y: auto;
+			.list-item {
+				width: 100%;
+				height: 30px;
+				display: flex;
+				align-items: center;
+				box-sizing: border-box;
+				user-select: none;
+				margin-bottom: 3px;
+				cursor: default;
+				&:focus {
+					outline: none;
+					border-bottom: 2px solid #f0f2f7;
+				}
+			}
+			&::-webkit-scrollbar-track {
+				//box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+				// border-radius: 10px;
+				background-color: #ffffff;
+			}
+
+			&::-webkit-scrollbar {
+				width: 10px;
+				height: 10px;
+				// background-color: #f5f5f5;
+			}
+
+			&::-webkit-scrollbar-thumb {
+				// border-radius: 10px;
+				// box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+				background-color: #f0f2f7;
+				border-radius: 5px;
+			}
+		}
+	}
+
+	.file-menu,
+	.drives-menu {
+		margin-top: 20px;
+		margin-bottom: 20px;
+		position: relative;
+		width: 100%;
+		height: 100px;
+		background-color: #ffffff;
+		border-radius: 20px;
+		padding: 20px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		box-sizing: border-box;
+		.item {
+			flex: 1;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 44px;
+			background-color: #f0f2f7;
+			border-radius: 10px;
+			margin: 10px;
+			cursor: default;
+			&:hover {
+				background-color: rgb(192, 193, 197);
+			}
+		}
+	}
+
+	.drop-file-zone {
+		position: relative;
+		width: 100%;
+		height: 100px;
+		// margin-top: 20px;
+		.file-drop {
+			/* relatively position the container bc the contents are absolute */
+			position: relative;
+			height: 100px;
+			width: 100%;
+			background-image: linear-gradient(
+				to bottom,
+				#8eb4e8,
+				#b0baeb,
+				#cbc2ec,
+				#e1cbec,
+				#f1d6ed
+			);
+			border-radius: 20px;
+		}
+
+		.file-drop > .file-drop-target {
+			/* basic styles */
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 100%;
+			width: 100%;
+			border-radius: 2px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			align-content: center;
+			text-align: center;
+		}
+
+		.file-drop > .file-drop-target.file-drop-dragging-over-frame {
+			/* overlay a black mask when dragging over the frame */
+			border: none;
+			// background-color: rgba(100, 100, 100, 0.65);
+			box-shadow: none;
+			z-index: 50;
+			opacity: 1;
+			/* --------------- */
+
+			/* typography */
+			color: 445397;
+			/* --------------- */
+		}
+
+		.file-drop > .file-drop-target.file-drop-dragging-over-target {
+			/* turn stuff orange when we are dragging over the target */
+			// color: #818181;
+			// box-shadow: 0 0 13px 3px #818181;
+		}
+	}
+}
