@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./css/main.scss";
 import FileDrop from "react-file-drop";
-import "./css/fonts/fontawesome/css/all.css";
 import DriversPanel from "./components/DrivesPanel";
 const fs =
 	typeof window.require === "function" ? window.require("fs") : undefined;
@@ -88,7 +87,7 @@ function App() {
 						handleWindowAction("minimize");
 					}}
 				>
-					<i className="fas fa-minus"></i>
+					-
 				</div>
 				<div
 					className="window-button"
@@ -96,7 +95,7 @@ function App() {
 						handleWindowAction("close");
 					}}
 				>
-					<i className="fas fa-times fa-md"></i>
+					x
 				</div>
 			</div>
 			<div className="titlebar">Explorer</div>
@@ -109,7 +108,7 @@ function App() {
 				<div className="files-list-wrapper">
 					<div className="file-list-title-wrapper">
 						<div onClick={handleBack}>
-							<i className="fas fa-arrow-left"></i>
+							{`<`}
 						</div>
 						<div className="current-dir">{currentDistPath}</div>
 					</div>
@@ -130,13 +129,13 @@ function App() {
 				</div>
 				<div className="file-menu">
 					<div className="item">
-						<i className="fas fa-download"></i>
+						Download
 					</div>
 					<div className="item" onClick={handleDeleteFile}>
-						<i className="far fa-trash-alt"></i>
+						Delete
 					</div>
 					<div className="item">
-						<i className="fas fa-info"></i>
+						Info
 					</div>
 				</div>
 				<div id="react-file-drop-demo" className="drop-file-zone">

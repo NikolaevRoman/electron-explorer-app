@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
-const drivelist = window.require("drivelist");
+const drivelist =typeof window.require === "function"
+? window.require("drivelist")
+: undefined;
 const networkDrive =
 	typeof window.require === "function"
 		? window.require("windows-network-drive")
@@ -7,8 +9,8 @@ const networkDrive =
 
 export default function DriversPanel({ drives, setDrives, driveClick }) {
 	const findAllDrives = async () => {
-		const drives = await drivelist.list();
-		const networkDrives = networkDrive.isWinOs()
+		const drives = await drivelist?.list();
+		const networkDrives = networkDrive?.isWinOs() ?? []
 			? await networkDrive.list()
 			: [];
 		setDrives(() => {
