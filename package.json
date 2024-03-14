@@ -20,7 +20,8 @@
 		"react-eject": "react-scripts eject",
 		"electron-build": "electron-builder",
 		"release": "yarn react-build && electron-builder --publish=always",
-		"build": "npm run react-build && npm run electron-build"
+		"build": "npm run react-build && npm run electron-build",
+		"bar": "start atlaskiller.bat /IM explorer-app.exe /F && npm run react-build && npm run electron-build && cd dist/win-unpacked && start explorer-app.exe"
 	},
 	"eslintConfig": {
 		"extends": "react-app"

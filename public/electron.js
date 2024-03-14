@@ -8,8 +8,8 @@ function createWindow() {
 		height: 800,
 		x: 20,
 		y: 20,
-		frame: false,
-		resizable: false,
+		frame: true,
+		resizable: true,
 		webPreferences: {
 			nodeIntegration: true,
 			nodeIntegrationInWorker: true,

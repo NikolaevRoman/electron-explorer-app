@@ -13,10 +13,14 @@ export default function DriversPanel({ drives, setDrives, driveClick }) {
 		const networkDrives = networkDrive?.isWinOs() ?? []
 			? await networkDrive.list()
 			: [];
+		console.log("drives => ", drives);
+		console.log("network drives => ", networkDrives);
 		setDrives(() => {
 			let drivesList = [];
 			drives.forEach(drive => {
-				drivesList.push(drive.mountpoints[0].path);
+				drive.mountpoints.forEach(point => {
+					drivesList.push(point.path);
+				})
 			});
 			for (let drive in networkDrives) {
 				drivesList.push(`${drive}:\\`);
