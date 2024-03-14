@@ -5,11 +5,11 @@ let mainWindow;
 function createWindow() {
 	mainWindow = new BrowserWindow({
 		width: 400,
-		height: 1000,
-		x: 1000,
-		y: 500,
-		frame: false,
-		resizable: false,
+		height: 800,
+		x: 20,
+		y: 20,
+		frame: true,
+		resizable: true,
 		webPreferences: {
 			nodeIntegration: true,
 			nodeIntegrationInWorker: true,

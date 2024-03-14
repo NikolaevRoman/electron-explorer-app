@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./css/main.scss";
 import FileDrop from "react-file-drop";
-import "./css/fonts/fontawesome/css/all.css";
 import DriversPanel from "./components/DrivesPanel";
 const fs =
 	typeof window.require === "function" ? window.require("fs") : undefined;
@@ -10,10 +9,12 @@ var path =
 const distPath = "C:\\";
 
 function App() {
+	const [searchPattern, setSearchPattern] = useState("");
 	const [filesList, setFilesList] = useState([]);
 	const [currentFileName, setCurrentFileName] = useState("");
 	const [currentDistPath, setCurrentDistPath] = useState(distPath);
 	const [drives, setDrives] = useState([]);
+	const displayedList = filesList.filter(item => item.includes(searchPattern))
 	const updateFileList = path => {
 		if (fs)
 			fs.readdir(path || currentDistPath, function(err, dir) {
@@ -80,7 +81,7 @@ function App() {
 
 	return (
 		<div className="main-body">
-			<div className="window-buttons-wrapper">
+			{/* <div className="window-buttons-wrapper">
 				<div className="window-handle"></div>
 				<div
 					className="window-button"
@@ -88,7 +89,7 @@ function App() {
 						handleWindowAction("minimize");
 					}}
 				>
-					<i className="fas fa-minus"></i>
+					-
 				</div>
 				<div
 					className="window-button"
@@ -96,25 +97,30 @@ function App() {
 						handleWindowAction("close");
 					}}
 				>
-					<i className="fas fa-times fa-md"></i>
+					x
 				</div>
-			</div>
-			<div className="titlebar">Explorer</div>
+			</div> */}
+			{/* <div className="titlebar">Explorer</div> */}
 			<div className="content">
 				<DriversPanel
 					drives={drives}
 					setDrives={setDrives}
 					driveClick={driveClick}
 				/>
+				<div className="finder">
+					<input type="text" onInput={(e) => {
+						setSearchPattern(e.currentTarget.value ?? "");
+					}}></input>
+				</div>
 				<div className="files-list-wrapper">
 					<div className="file-list-title-wrapper">
 						<div onClick={handleBack}>
-							<i className="fas fa-arrow-left"></i>
+							{`<`}
 						</div>
 						<div className="current-dir">{currentDistPath}</div>
 					</div>
 					<div className="files-list">
-						{filesList?.map((item, i) => {
+						{displayedList?.map((item, i) => {
 							return (
 								<div
 									className="list-item"
@@ -130,13 +136,13 @@ function App() {
 				</div>
 				<div className="file-menu">
 					<div className="item">
-						<i className="fas fa-download"></i>
+						Download
 					</div>
 					<div className="item" onClick={handleDeleteFile}>
-						<i className="far fa-trash-alt"></i>
+						Delete
 					</div>
 					<div className="item">
-						<i className="fas fa-info"></i>
+						Info
 					</div>
 				</div>
 				<div id="react-file-drop-demo" className="drop-file-zone">
