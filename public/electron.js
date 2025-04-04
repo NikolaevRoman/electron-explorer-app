@@ -1,5 +1,8 @@
-const { app, globalShortcut, BrowserWindow } = require("electron");
-const path = require("path");
+const { app, globalShortcut, BrowserWindow, ipcMain } = require("electron");
+const path = require('node:path')
+const drivelist = require('drivelist');
+const networkDrive = require('windows-network-drive')
+const { readdir } = require('node:fs/promises')
 let mainWindow;
 
 function createWindow() {
@@ -11,8 +14,7 @@ function createWindow() {
 		frame: true,
 		resizable: true,
 		webPreferences: {
-			nodeIntegration: true,
-			nodeIntegrationInWorker: true,
+			preload: path.join(__dirname, 'preload.js')
 		},
 		backgroundColor: "#F0F2F7",
 		fullscreen: false,
@@ -70,13 +72,16 @@ app.on("will-quit", () => {
 	globalShortcut.unregisterAll();
 });
 
-const { ipcMain } = require("electron");
-ipcMain.on("asynchronous-message", (event, arg) => {
-	console.log(arg); // prints "ping"
-	event.reply("asynchronous-reply", "pong");
-});
+ipcMain.handle("localList", async () => {
+	const list = await drivelist.list();
+	return list;
+})
 
-ipcMain.on("synchronous-message", (event, arg) => {
-	console.log(arg); // prints "ping"
-	event.returnValue = "pong";
-});
+ipcMain.handle("isWinOs", async () => networkDrive.isWinOs())
+
+ipcMain.handle("networkList", async () => await networkDrive.list())
+
+ipcMain.handle("filesList", async (event, path) => {
+	const files = await readdir(path);
+	return files;
+} ) 

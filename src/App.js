@@ -1,73 +1,46 @@
 import React, { useState, useEffect } from "react";
 import "./css/main.scss";
-import FileDrop from "react-file-drop";
 import DriversPanel from "./components/DrivesPanel";
-const fs =
-	typeof window.require === "function" ? window.require("fs") : undefined;
 var path =
 	typeof window.require === "function" ? window.require("path") : undefined;
 const distPath = "C:\\";
 
 function App() {
+	//states
 	const [searchPattern, setSearchPattern] = useState("");
 	const [filesList, setFilesList] = useState([]);
 	const [currentFileName, setCurrentFileName] = useState("");
 	const [currentDistPath, setCurrentDistPath] = useState(distPath);
 	const [drives, setDrives] = useState([]);
+
+	//variables
 	const displayedList = filesList.filter(item => item.includes(searchPattern))
-	const updateFileList = path => {
-		if (fs)
-			fs.readdir(path || currentDistPath, function(err, dir) {
-				setFilesList(dir);
-			});
+	
+	//#region functions
+	const updateFileList = async (path) => {
+		const fileList = await window.files.filesList(path || currentDistPath) 
+		setFilesList(fileList);
 	};
-
-	useEffect(() => {
-		updateFileList();
-	}, []);
-
-	const handleDrop = (files, event) => {
-		console.log(files, event);
-		if (fs)
-			fs.copyFile(
-				files[0].path,
-				path.join(currentDistPath, files[0].name),
-				err => {
-					if (err) throw err;
-					updateFileList();
-				}
-			);
-	};
-
-	const handleWindowAction = action => {
-		const remote = window.require("electron").remote;
-		let w = remote.getCurrentWindow();
-		w[action]();
-	};
-
-	useEffect(() => {
-		updateFileList(currentDistPath);
-	}, [currentDistPath, currentFileName]);
 
 	const handleFileSelection = event => {
-		if (
-			fs
-				.lstatSync(path.join(currentDistPath, event.currentTarget.textContent))
-				.isFile()
-		) {
-			setCurrentFileName(path.join(event.currentTarget.textContent));
-		} else {
-			setCurrentDistPath(
-				path.join(currentDistPath, event.currentTarget.textContent)
-			);
-		}
+		// if (
+		// 	fs
+		// 		.lstatSync(path.join(currentDistPath, event.currentTarget.textContent))
+		// 		.isFile()
+		// ) {
+		// 	setCurrentFileName(path.join(event.currentTarget.textContent));
+		// } else {
+		// 	setCurrentDistPath(
+		// 		path.join(currentDistPath, event.currentTarget.textContent)
+		// 	);
+		// }
 	};
 
 	const handleDeleteFile = () => {
-		fs.unlink(path.join(currentDistPath, currentFileName), err => {
-			if (err) throw err;
-			setCurrentFileName("");
-		});
+		// fs.unlink(path.join(currentDistPath, currentFileName), err => {
+		// 	if (err) throw err;
+		// 	setCurrentFileName("");
+		// });
 	};
 
 	const handleBack = () => {
@@ -78,29 +51,20 @@ function App() {
 		setCurrentDistPath(event.currentTarget.textContent);
 		setCurrentFileName("");
 	};
+	//#endregion
+
+	//#region effects
+	useEffect(() => {
+		updateFileList();
+	}, []);
+
+	useEffect(() => {
+		updateFileList(currentDistPath);
+	}, [currentDistPath, currentFileName]);
+	//#endregion
 
 	return (
 		<div className="main-body">
-			{/* <div className="window-buttons-wrapper">
-				<div className="window-handle"></div>
-				<div
-					className="window-button"
-					onClick={() => {
-						handleWindowAction("minimize");
-					}}
-				>
-					-
-				</div>
-				<div
-					className="window-button"
-					onClick={() => {
-						handleWindowAction("close");
-					}}
-				>
-					x
-				</div>
-			</div> */}
-			{/* <div className="titlebar">Explorer</div> */}
 			<div className="content">
 				<DriversPanel
 					drives={drives}
@@ -144,9 +108,6 @@ function App() {
 					<div className="item">
 						Info
 					</div>
-				</div>
-				<div id="react-file-drop-demo" className="drop-file-zone">
-					<FileDrop onDrop={handleDrop}>Upload file(drag'n'drop)</FileDrop>
 				</div>
 			</div>
 		</div>
