@@ -14,26 +14,36 @@ function App() {
 	const [drives, setDrives] = useState([]);
 
 	//variables
-	const displayedList = filesList.filter(item => item.includes(searchPattern))
+	const displayedList = filesList//filesList.filter(item => item.includes(searchPattern))
 	
 	//#region functions
 	const updateFileList = async (path) => {
-		const fileList = await window.files.filesList(path || currentDistPath) 
-		setFilesList(fileList);
+		try{
+			if(path.includes("/..")){
+				setFilesList(prev => {
+					const array = [...prev]
+					array.pop();
+					return array;
+				});
+			} else {
+				const fileList = await window.files.filesList(path || currentDistPath) 
+				setFilesList(prev => [...prev, fileList]);
+			}
+		}catch(exception){
+			console.error(exception)
+			const backPath = await window.files.pathJoin(currentDistPath, "/..");
+			setCurrentDistPath(backPath);
+		}
 	};
 
-	const handleFileSelection = event => {
-		// if (
-		// 	fs
-		// 		.lstatSync(path.join(currentDistPath, event.currentTarget.textContent))
-		// 		.isFile()
-		// ) {
-		// 	setCurrentFileName(path.join(event.currentTarget.textContent));
-		// } else {
-		// 	setCurrentDistPath(
-		// 		path.join(currentDistPath, event.currentTarget.textContent)
-		// 	);
-		// }
+	const handleFileSelection = async (event) => {
+		const isFile = await window.files.isFile(currentDistPath, event.target.value);
+		const targetPath =await window.files.pathJoin(currentDistPath, event.target.value);
+		if(isFile){
+			setCurrentFileName(targetPath);
+		}else {
+			setCurrentDistPath(targetPath);
+		}
 	};
 
 	const handleDeleteFile = () => {
@@ -43,8 +53,9 @@ function App() {
 		// });
 	};
 
-	const handleBack = () => {
-		setCurrentDistPath(path.join(currentDistPath, "/.."));
+	const handleBack = async () => {
+		const backPath = await window.files.pathJoin(currentDistPath, "/..");
+		setCurrentDistPath(backPath);
 	};
 
 	const driveClick = event => {
@@ -54,13 +65,10 @@ function App() {
 	//#endregion
 
 	//#region effects
-	useEffect(() => {
-		updateFileList();
-	}, []);
 
 	useEffect(() => {
 		updateFileList(currentDistPath);
-	}, [currentDistPath, currentFileName]);
+	}, [currentDistPath]);
 	//#endregion
 
 	return (
@@ -84,20 +92,21 @@ function App() {
 						<div className="current-dir">{currentDistPath}</div>
 					</div>
 					<div className="files-panels">
-						<div className="files-list">
-							{displayedList?.map((item, i) => {
+						{displayedList.map(list => {
+							return <div className="files-list">
+							{list?.map((item, i) => {
 								return (
-									<div
+									<input
+										type="text"
+										readOnly
 										className="list-item"
 										tabIndex={i}
 										onMouseDown={handleFileSelection}
 										value={item}
-									>
-										{item}
-									</div>
+									/>
 								);
 							})}
-						</div>
+						</div>})}
 					</div>
 					<div className="file-menu">
 						<div className="item">

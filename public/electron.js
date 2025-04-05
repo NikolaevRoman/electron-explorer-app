@@ -2,13 +2,13 @@ const { app, globalShortcut, BrowserWindow, ipcMain } = require("electron");
 const path = require('node:path')
 const drivelist = require('drivelist');
 const networkDrive = require('windows-network-drive')
-const { readdir } = require('node:fs/promises')
+const { readdir, lstat } = require('node:fs/promises')
 let mainWindow;
 
 function createWindow() {
 	mainWindow = new BrowserWindow({
-		width: 400,
-		height: 800,
+		width: 800,
+		height: 600,
 		x: 20,
 		y: 20,
 		frame: true,
@@ -83,5 +83,17 @@ ipcMain.handle("networkList", async () => await networkDrive.list())
 
 ipcMain.handle("filesList", async (event, path) => {
 	const files = await readdir(path);
+	const filesStat = await lstat(path);
+	console.log(filesStat)
 	return files;
+}) 
+
+ipcMain.handle("isFile", async (event, ...args) => {
+	console.log(...args)
+	const fileInfo = await lstat(path.join(...args));
+	return fileInfo.isFile();
+}) 
+
+ipcMain.handle("pathJoin", async (event, ...args) => {
+	return path.join(...args);
 } ) 

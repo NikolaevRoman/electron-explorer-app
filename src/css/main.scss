@@ -47,6 +47,7 @@
 		.file-list-title-wrapper {
 			height: auto;
 			display: flex;
+			flex: 0 0 50px;
 			align-items: center;
 			.current-dir {
 				// margin-left: 6px;
@@ -56,8 +57,9 @@
 		.files-panels{
 			display: flex;
 			flex: 1;
+			height: calc(100% - 100px);
 			.files-list {
-				flex: 9;
+				flex: 1;
 				overflow-x: hidden;
 				overflow-y: auto;
 				.list-item {
@@ -68,29 +70,14 @@
 					box-sizing: border-box;
 					user-select: none;
 					margin-bottom: 3px;
+					background-color: transparent;
+					border: none;
 					cursor: default;
+					color: white;
 					&:focus {
 						outline: none;
 						border-bottom: 2px solid #f0f2f7;
 					}
-				}
-				&::-webkit-scrollbar-track {
-					//box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-					// border-radius: 10px;
-					background-color: #ffffff;
-				}
-	
-				&::-webkit-scrollbar {
-					width: 10px;
-					height: 10px;
-					// background-color: #f5f5f5;
-				}
-	
-				&::-webkit-scrollbar-thumb {
-					// border-radius: 10px;
-					// box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-					background-color: #f0f2f7;
-					border-radius: 5px;
 				}
 			}
 		}
@@ -128,6 +115,7 @@
 	.file-menu{
 		display: flex;
 		gap: 10px;
+		flex: 0 0 50px;
 		.item {
 			flex: 1;
 			display: flex;

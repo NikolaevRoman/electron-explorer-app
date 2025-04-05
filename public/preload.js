@@ -7,5 +7,7 @@ contextBridge.exposeInMainWorld('drivers', {
 })
 
 contextBridge.exposeInMainWorld('files', {
-    filesList: (path) => ipcRenderer.invoke('filesList', path)
+    filesList: (path) => ipcRenderer.invoke('filesList', path),
+    isFile: (path, fileName) => ipcRenderer.invoke('isFile', path, fileName),
+    pathJoin: (path, fileName) => ipcRenderer.invoke("pathJoin", path, fileName),
 })
