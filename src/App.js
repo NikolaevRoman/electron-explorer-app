@@ -71,42 +71,44 @@ function App() {
 					setDrives={setDrives}
 					driveClick={driveClick}
 				/>
-				<div className="finder">
+				{/* <div className="finder">
 					<input type="text" onInput={(e) => {
 						setSearchPattern(e.currentTarget.value ?? "");
 					}}></input>
-				</div>
+				</div> */}
 				<div className="files-list-wrapper">
 					<div className="file-list-title-wrapper">
-						<div onClick={handleBack}>
-							{`<`}
+						<div onClick={handleBack} style={{cursor: "pointer"}}>
+							{`..\\`}
 						</div>
 						<div className="current-dir">{currentDistPath}</div>
 					</div>
-					<div className="files-list">
-						{displayedList?.map((item, i) => {
-							return (
-								<div
-									className="list-item"
-									tabIndex={i}
-									onMouseDown={handleFileSelection}
-									value={item}
-								>
-									{item}
-								</div>
-							);
-						})}
+					<div className="files-panels">
+						<div className="files-list">
+							{displayedList?.map((item, i) => {
+								return (
+									<div
+										className="list-item"
+										tabIndex={i}
+										onMouseDown={handleFileSelection}
+										value={item}
+									>
+										{item}
+									</div>
+								);
+							})}
+						</div>
 					</div>
-				</div>
-				<div className="file-menu">
-					<div className="item">
-						Download
-					</div>
-					<div className="item" onClick={handleDeleteFile}>
-						Delete
-					</div>
-					<div className="item">
-						Info
+					<div className="file-menu">
+						<div className="item">
+							Download
+						</div>
+						<div className="item" onClick={handleDeleteFile}>
+							Delete
+						</div>
+						<div className="item">
+							Info
+						</div>
 					</div>
 				</div>
 			</div>
